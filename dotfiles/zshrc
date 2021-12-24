@@ -1,0 +1,12 @@
+# プロント設定(starship)
+eval "$(starship init zsh)"
+
+# python エイリアス
+alias python=/usr/local/bin/python3
+
+# cd の後に ls したい
+chpwd() {
+    if [[ $(pwd) != $HOME ]]; then;
+        ls
+    fi
+}
