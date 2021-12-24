@@ -1,8 +1,9 @@
 [memory_usage]
 disabled = false
-show_percentage = true
-show_swap = true
 threshold = -1
 symbol = " "
-separator = "/"
-style = "bold dimmed blue"
+style = "bold dimmed green"
+
+[hostname]
+ssh_only = false
+disabled = false
