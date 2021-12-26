@@ -9,7 +9,12 @@ HOSTNAME='raspberry'
 GITHUB_ID='hirotaka42'
 SETTING_IP_FLAG=0
 SETTING_PROMPT_FLAG=0
+SETTING_GUI_FLAG=0
 
+read -n1 -p "RaspberryPi Desktop版の設定を実行しますか? (y/N): " yn; case "$yn" in [yY]*) SETTING_GUI_FLAG=1;; *) echo " ";; esac
+echo "設定ファイルをダウンロード"
+mkdir ~/Github && cd ~/Github 
+git clone https://github.com/hirotaka42/my-sh.git 
 
 echo "IP_ADDRESS=${IP_ADDRESS}"
 echo "ROUTERS=${ROUTERS}" 
@@ -26,10 +31,12 @@ sudo raspi-config nonint do_wifi_country JP
 sudo sed -i "s/deb.debian.org\/debian /ftp.jp.debian.org\/debian /g" /etc/apt/sources.list
 echo "セットアップ"
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y 
-sudo apt install -y ntfs-3g cifs-utils git
+sudo apt install -y ntfs-3g cifs-utils git 
+# viを消しVimをinstall
 dpkg -l | grep vim 
 sudo apt --purge remove -y vim-common vim-tiny 
 sudo apt install vim -y 
+# ssh接続用の公開鍵をGithubアカウントから取得
 if [ ${GITHUB_ID} != 'None' ]; then
     ssh-import-id gh:${GITHUB_ID} 
 else
@@ -50,9 +57,7 @@ if [ ${SETTING_PROMPT_FLAG} = '1' ]; then
     echo '-------------------------' 
     echo '2 ) Setting starship.toml' 
     mkdir ~/.config && touch ~/.config/starship.toml 
-    mkdir ~/Github && cd ~/Github 
-    git clone https://github.com/hirotaka42/my-sh.git 
-    ln -fs "$HOME/Github/my-sh/dotfiles/starship.toml" "$HOME/.config/starship.toml" 
+    cp -f "$HOME/Github/my-sh/dotfiles/starship.toml" "$HOME/.config/starship.toml" 
     echo '-------------------------' 
     echo '3 ) install NerdFonts' 
     mkdir -p ~/.local/share/fonts 
@@ -72,6 +77,19 @@ if [ ${SETTING_IP_FLAG} = '1' ]; then
     echo "staitc domain_name_servers=${DOMAIN_NAME_SERVERS}" | tee -a /etc/dhcpcd.conf 
     sudo raspi-config nonint do_hostname ${HOSTNAME} 
     echo "IPアドレスは ${IP_ADDRESS}, ホストネームは ${HOSTNAME} に設定しました(再起動後に有効になります)" 
+else
+    :
+fi
+
+# Desktop app設定
+if [ ${SETTING_GUI_FLAG} = '1' ]; then
+    # 日本語入力 fcitx-mozc と vscode
+    sudo apt install -y fcitx-mozc code
+    echo '-------------------------' 
+    echo '2.1 ) Setting Prompt' 
+    # zshrc
+    cp -f "$HOME/Github/my-sh/dotfiles/zshrc" "$HOME/.zshrc" 
+    cp -f "$HOME/Github/my-sh/config/fcitx/config" "$HOME/.config/fcitx/config" 
 else
     :
 fi
