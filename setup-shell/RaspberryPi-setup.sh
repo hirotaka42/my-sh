@@ -43,6 +43,19 @@ else
     :
 fi
 
+# Desktop app設定
+if [ ${SETTING_GUI_FLAG} = '1' ]; then
+    # 日本語入力 fcitx-mozc と vscode
+    sudo apt install -y fcitx-mozc code
+    echo '-------------------------' 
+    echo 'GUI ) Setting Desktop app' 
+    # zshrc
+    cp -f "$HOME/Github/my-sh/dotfiles/zshrc" "$HOME/.zshrc" 
+    cp -f "$HOME/Github/my-sh/config/fcitx/config" "$HOME/.config/fcitx/config" 
+else
+    :
+fi
+
 if [ ${SETTING_PROMPT_FLAG} = '1' ]; then
     echo '-------------------------' 
     echo '0 ) install & change the shell ' 
@@ -77,19 +90,6 @@ if [ ${SETTING_IP_FLAG} = '1' ]; then
     echo "staitc domain_name_servers=${DOMAIN_NAME_SERVERS}" | tee -a /etc/dhcpcd.conf 
     sudo raspi-config nonint do_hostname ${HOSTNAME} 
     echo "IPアドレスは ${IP_ADDRESS}, ホストネームは ${HOSTNAME} に設定しました(再起動後に有効になります)" 
-else
-    :
-fi
-
-# Desktop app設定
-if [ ${SETTING_GUI_FLAG} = '1' ]; then
-    # 日本語入力 fcitx-mozc と vscode
-    sudo apt install -y fcitx-mozc code
-    echo '-------------------------' 
-    echo '2.1 ) Setting Prompt' 
-    # zshrc
-    cp -f "$HOME/Github/my-sh/dotfiles/zshrc" "$HOME/.zshrc" 
-    cp -f "$HOME/Github/my-sh/config/fcitx/config" "$HOME/.config/fcitx/config" 
 else
     :
 fi

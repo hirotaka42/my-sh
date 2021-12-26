@@ -2,7 +2,10 @@
 
 ##Installation
 
-` sh -c "$(curl -fsSL https://raw.githubusercontent.com/hirotaka42/my-sh/main/setup-shell/RaspberryPi-setup.sh)"`
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/hirotaka42/my-sh/main/setup-shell/install.sh)"
+```
+
 
 ##Overview
 
