@@ -9,14 +9,16 @@
 
 ```bash:一括実行
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/hirotaka42/my-sh/main/setup-shell/install.sh)"
+```
 
+```bash:
 echo '-------------------------' && \
 echo '0 ) install & change the shell ' && \
 sudo apt install zsh -y && \
-chsh -s /bin/zsh
+chsh -s /bin/zsh && \
 echo '-------------------------' && \
 echo '1 ) install starship' && \
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" && \
 eval "$(starship init zsh)" && \
 echo '-------------------------' && \
 echo '2 ) Setting starship.toml' && \
